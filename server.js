@@ -1,12 +1,19 @@
-const express = require('express');
+var fs = require('fs');
+
+const express = require('/home/ubuntu/video-chat-learn/node_modules/express');
 // create express app
 const app = express();
 // create server
-const server = require('http').Server(app);
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/gamenite.app/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/gamenite.app/fullchain.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+const server = require('https').createServer(credentials, app);
+// const server = require('https').Server(app);
+
 // connect server to socket
-const io = require('socket.io')(server);
+const io = require('/home/ubuntu/video-chat-learn/node_modules/socket.io')(server);
 // get random roomId using uuid
-const { v4: uuidV4 } = require('uuid');
+const { v4: uuidV4 } = require('/home/ubuntu/video-chat-learn/node_modules/uuid');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
